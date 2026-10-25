@@ -20,6 +20,7 @@ namespace tic_tac_toe
         }
         public void Draw()
         {
+            Console.Clear();
             for (int i = 0; i < 3; i++)
             {
                 Console.WriteLine("-------------");
@@ -30,6 +31,23 @@ namespace tic_tac_toe
                 Console.WriteLine('|');
             }
             Console.WriteLine("-------------");
+        }
+        public bool Set(int x, int y, Obj o)
+        {
+            x--;
+            y--;
+            if (x >= 0 && x <= 2 && y >= 0 && y <= 2)
+            {
+                if (Field[x, y] == ' ')
+                {
+                    Field[x, y] = o == Obj.Cross ? 'x' : 'o';
+                    return true;
+                }
+                Console.WriteLine("Клетка уже занята. Выберите другую");
+                return false;
+            }
+            Console.WriteLine("Такой клетки не существует. Выберите другую");
+            return false;
         }
     }
     public enum Obj
