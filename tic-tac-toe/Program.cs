@@ -9,6 +9,8 @@ Obj player = Obj.Cross;
 while (true)
 {
     game.Draw();
+    if (game.CheckWin())
+        break;
     Step(player);
     player = player == Obj.Cross ? Obj.Zero : Obj.Cross;
 }
