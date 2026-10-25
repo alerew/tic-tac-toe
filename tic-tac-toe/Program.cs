@@ -4,15 +4,14 @@ Console.Title = "Крестики-нолики";
 
 var game = new Game();
 
-game.Draw();
+Obj player = Obj.Cross;
 
-Step(Obj.Cross);
-
-game.Draw();
-
-Step(Obj.Zero);
-
-game.Draw();
+while (true)
+{
+    game.Draw();
+    Step(player);
+    player = player == Obj.Cross ? Obj.Zero : Obj.Cross;
+}
 
 void Step(Obj player)
 {

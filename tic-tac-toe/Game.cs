@@ -52,7 +52,7 @@ namespace tic_tac_toe
     }
     public enum Obj
     {
-        Cross,
-        Zero
+        Zero = 0,
+        Cross = 1
     }
 }
