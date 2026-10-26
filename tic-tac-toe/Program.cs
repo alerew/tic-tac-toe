@@ -6,15 +6,23 @@ var game = new Game();
 
 Obj player = Obj.Cross;
 
+game.Draw();
+
 while (true)
 {
+    Step(player);
     game.Draw();
+
     var w = game.CheckWin();
     if (w is not null){
         Console.WriteLine($"Победили {(w == Obj.Cross ? "крестики" : "нолики")}");
         break;
     }
-    Step(player);
+    if (game.CheckDraw())
+    {
+        Console.WriteLine($"Ничья");
+        break;
+    }    
     player = player == Obj.Cross ? Obj.Zero : Obj.Cross;
 }
 
