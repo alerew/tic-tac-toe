@@ -7,6 +7,8 @@ namespace tic_tac_toe
     public class Game
     {
         char[,] Field;
+        public static Dictionary<char, Obj> CharToObj = new() { ['x'] = Obj.Cross, ['o'] = Obj.Zero };
+        public static Dictionary<Obj, char> ObjToChar = new() { [Obj.Cross] = 'x', [Obj.Zero] = 'o' };
         public Game()
         {
             Field = new char[3, 3];
@@ -40,7 +42,7 @@ namespace tic_tac_toe
             {
                 if (Field[x, y] == ' ')
                 {
-                    Field[x, y] = o == Obj.Cross ? 'x' : 'o';
+                    Field[x, y] = ObjToChar[o];
                     return true;
                 }
                 Console.WriteLine("Клетка уже занята. Выберите другую");
@@ -49,51 +51,21 @@ namespace tic_tac_toe
             Console.WriteLine("Такой клетки не существует. Выберите другую");
             return false;
         }
-        public bool CheckWin()
+        public Obj? CheckWin()
         {
             for (int i = 0; i < 3; i++)
             {
-                var r = CheckRow(i);
-                var c = CheckCol(i);
-                if (Test(r) || Test(c))
-                    return true;
+                if (Field[i, 0] != ' ' && Field[i, 0] == Field[i, 1] && Field[i, 1] == Field[i, 2]) // проверка строк
+                    return CharToObj[Field[i, 0]];
+                if (Field[0, i] != ' ' && Field[0, i] == Field[1, i] && Field[1, i] == Field[2, i]) // проверка столбцов
+                    return CharToObj[Field[0, i]];
             }
-
-            return Test(CheckDiag());
-        }
-        private Obj? CheckRow(int r)
-        {
-            if (Field[r,0] != ' ' && Field[r, 0] == Field[r, 1] && Field[r, 1] == Field[r, 2])
-            {
-                return Field[r, 0] == 'x' ? Obj.Cross : Obj.Zero;
-            }
+            if (Field[1, 1] != ' ' && 
+                ((Field[0, 0] == Field[1, 1] && Field[1, 1] == Field[2, 2]) ||
+                (Field[2, 0] == Field[1, 1] && Field[1, 1] == Field[0, 2])))    // проверка диагоналей
+                return CharToObj[Field[1, 1]];
             return null;
         }
-        private Obj? CheckCol(int c)
-        {
-            if (Field[0, c] != ' ' && Field[0, c] == Field[1, c] && Field[1, c] == Field[2, c])
-            {
-                return Field[0, c] == 'x' ? Obj.Cross : Obj.Zero;
-            }
-            return null;
-        }
-        private Obj? CheckDiag()
-        {
-            if (Field[1, 1] != ' ' && ((Field[0, 0] == Field[1, 1] && Field[1, 1] == Field[2, 2]) ||
-                (Field[2, 0] == Field[1, 1] && Field[1, 1] == Field[0, 2])))
-            {
-                return Field[1, 1] == 'x' ? Obj.Cross : Obj.Zero;
-            }
-            return null;
-        }
-        private bool Test(Obj? obj)
-        {
-            if(obj is not null)
-            {
-                Console.WriteLine($"Победили {(obj == Obj.Zero ? "нолики" : "крестики")}");
-                return true;
-            }
-            return false;
-        }
+        
     }
 }
