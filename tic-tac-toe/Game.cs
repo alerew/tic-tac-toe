@@ -7,6 +7,8 @@ namespace tic_tac_toe
     public class Game
     {
         char[,] Field;
+        public static Dictionary<char, Obj> CharToObj = new() { ['x'] = Obj.Cross, ['o'] = Obj.Zero };
+        public static Dictionary<Obj, char> ObjToChar = new() { [Obj.Cross] = 'x', [Obj.Zero] = 'o' };
         public Game()
         {
             Field = new char[3, 3];
@@ -40,7 +42,7 @@ namespace tic_tac_toe
             {
                 if (Field[x, y] == ' ')
                 {
-                    Field[x, y] = o == Obj.Cross ? 'x' : 'o';
+                    Field[x, y] = ObjToChar[o];
                     return true;
                 }
                 Console.WriteLine("Клетка уже занята. Выберите другую");
@@ -49,10 +51,21 @@ namespace tic_tac_toe
             Console.WriteLine("Такой клетки не существует. Выберите другую");
             return false;
         }
-    }
-    public enum Obj
-    {
-        Zero = 0,
-        Cross = 1
+        public Obj? CheckWin()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (Field[i, 0] != ' ' && Field[i, 0] == Field[i, 1] && Field[i, 1] == Field[i, 2]) // проверка строк
+                    return CharToObj[Field[i, 0]];
+                if (Field[0, i] != ' ' && Field[0, i] == Field[1, i] && Field[1, i] == Field[2, i]) // проверка столбцов
+                    return CharToObj[Field[0, i]];
+            }
+            if (Field[1, 1] != ' ' && 
+                ((Field[0, 0] == Field[1, 1] && Field[1, 1] == Field[2, 2]) ||
+                (Field[2, 0] == Field[1, 1] && Field[1, 1] == Field[0, 2])))    // проверка диагоналей
+                return CharToObj[Field[1, 1]];
+            return null;
+        }
+        
     }
 }
