@@ -12,6 +12,10 @@ namespace tic_tac_toe
         public Game()
         {
             Field = new char[3, 3];
+            Clear();
+        }
+        public void Clear()
+        {
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)

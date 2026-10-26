@@ -16,12 +16,14 @@ while (true)
     var w = game.CheckWin();
     if (w is not null){
         Console.WriteLine($"Победили {(w == Obj.Cross ? "крестики" : "нолики")}");
-        break;
+        Restart();
+        continue;
     }
     if (game.CheckDraw())
     {
         Console.WriteLine($"Ничья");
-        break;
+        Restart();
+        continue;
     }    
     player = player == Obj.Cross ? Obj.Zero : Obj.Cross;
 }
@@ -37,6 +39,13 @@ void Step(Obj player)
         flag &= int.TryParse(Console.ReadLine(), out int x);
         Console.Write("Столбец: ");
         flag &= int.TryParse(Console.ReadLine(), out int y);
-        flag = flag && game.Set(x, y, player);
+        flag &= game.Set(x, y, player);
     } while (!flag);
+}
+void Restart()
+{
+    game.Clear();
+    Console.WriteLine("Нажмите любую клавишу, чтобы продолжить");
+    Console.ReadKey();
+    game.Draw();
 }
